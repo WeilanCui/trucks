@@ -9,10 +9,14 @@ const user = (sequelize, DataTypes) => {
         },
       },
     });
+    
+    //one user has many reservations
+    //CASCADE if delete user reservations are deleted too
     User.associate = models => {
-        User.hasMany(models.Schedule);
+        User.hasMany(models.Reservation, { onDelete:'CASCADE'});
       };
      
+      //can find user by login which is username or email
       User.findByLogin = async login => {
         let user = await User.findOne({
           where: { username: login },
@@ -28,26 +32,4 @@ const user = (sequelize, DataTypes) => {
       };
     return User;
   };
-   
-  export default user;
-
-  const schedule = (sequelize, DataTypes) => {
-    const Schedule = sequelize.define('schedule', {
-      info: {
-        type: DataTypes.STRING,
-        unique:true,
-        allowNull: true,
-        validate: {
-          notEmpty: true,
-        },
-      }
-    });
-   
-    Message.associate = models => {
-      Message.belongsTo(models.User);
-    };
-   
-    return Message;
-  };
-   
-  export default message;
+  export default user
