@@ -1,25 +1,29 @@
-import Sequelize from 'sequelize';
+// const Sequelize = require('sequelize');
+// const User= require('./user.js')
+// const Reservation=require('./reservation.js')
+
+// const db = new Sequelize(
+//   "chariotTrucks",
+//   "weilancui",
+//   "password",
+//   {host:'localhost',
+//     dialect: 'postgres',
+//   },
+// );
  
-const sequelize = new Sequelize(
-  "chariotTrucks",
-  "weilancui",
-  process.env.DATABASE_PASSWORD,
-  {
-    dialect: 'postgres',
-  },
-);
- 
-const models = {
-  User: sequelize.import('./user'),
-  Reservation: sequelize.import('./reservation'),
-};
- 
-Object.keys(models).forEach(key => {
-  if ('associate' in models[key]) {
-    models[key].associate(models);
-  }
-});
- 
-export { sequelize };
- 
-export default models;
+
+
+// const models = {
+//   User,
+//   Reservation
+// };
+
+
+// Object.keys(models).forEach(key => {
+//   if ('associate' in models[key]) {
+//     models[key].associate(models);
+//   }
+// });
+
+// module.exports.db= db
+// module.exports.models=models

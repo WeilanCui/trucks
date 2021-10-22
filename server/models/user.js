@@ -1,17 +1,30 @@
-const user = (sequelize, DataTypes) => {
-    const User = sequelize.define('user', {
+const Sequelize = require('sequelize');
+const db= require('./index.js')
+
+const user = (db, DataTypes) => {
+    const User = db.define('user', {
       username: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         unique: true,
         allowNull: false,
         validate: {
           notEmpty: true,
         },
       },
+      password:{
+        type:Sequelize.STRING,
+      },
+      email:{
+        type:Sequelize.STRING
+      },
+      id:{
+        type:Sequelize.INTEGER, 
+        autoIncrement: true
+      }
     });
     
-    //one user has many reservations
-    //CASCADE if delete user reservations are deleted too
+    // one user has many reservations
+    // CASCADE if delete user reservations are deleted too
     User.associate = models => {
         User.hasMany(models.Reservation, { onDelete:'CASCADE'});
       };
@@ -30,6 +43,6 @@ const user = (sequelize, DataTypes) => {
      
         return user;
       };
-    return User;
+    // return User;
   };
-  export default user
+ module.exports= user

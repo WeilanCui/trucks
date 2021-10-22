@@ -1,2 +1,2 @@
 npm run serve <-- starts server
-npm run start <--starts dev
+npm run start || yarn start <--starts dev
