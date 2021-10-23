@@ -13,12 +13,14 @@ function App() {
         <Link to='/datepicker'> Schedule a truck </Link>
         <Switch>
           <Route exact path='/login' component={Login}></Route>
-          <Route exact path='/datepicker' component={Datepicker}/>
-        </Switch>
-        
-        {/* <Datepicker /> */}
-     
+          <Route exact path='/datepicker' component={Datepicker}/>     
+
+          <button onClick={()=>fetch('/').then((data)=>console.log(data))}>click meeeeeeee</button>  
+
+        </Switch> 
+          
       </Router>
+
     </div>
   );
 }
