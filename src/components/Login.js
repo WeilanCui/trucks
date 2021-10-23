@@ -1,11 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Reservations from "./Reservations";
 export default function Login(props) {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
-  const onSubmitFetch = (username, password) => {
-    if (!username || !password) return alert("Please enter username and password, or signup")
-      return fetch(`/login/${username}/${password}`)
+  const [log, setLog] = useState(null);
+
+  const onSubmitFetch = (username, password, route) => {
+    if (!username || !password)
+      return alert("Please enter username and password, login or sign up");
+
+    fetch(`/${route}/${username}/${password}`)
+      .then((res) => res.json())
+      .then((response) => {
+        
+        console.log(response);
+        if (response===false) return alert("login/sign up unsuccessful try again")
+        setLog(true);
+      });
   };
+
   return (
     <div>
       <h2>Login or Signup component</h2>
@@ -14,7 +27,6 @@ export default function Login(props) {
           type='text'
           placeholder='username'
           onChange={(e) => {
-            console.log(e.target.value);
             setUsername(e.target.value);
           }}
         />
@@ -25,8 +37,22 @@ export default function Login(props) {
           onChange={(e) => setPassword(e.target.value)}
         />
         <br />
-        <input type='submit' value='Submit' onClick={()=>onSubmitFetch(username,password)} />
+        <span>
+          <input
+            type='button'
+            value='Login'
+            onClick={() => onSubmitFetch(username, password,'login')}
+          />
+          <input
+            type='button'
+            value='Sign Up'
+            onClick={() => onSubmitFetch(username, password, 'signUp')}
+          />
+        </span>
       </form>
+
+      {log ? <Reservations username={username} /> : <h2>Login to see Reservations</h2>}
+      {/* <Reservations/> */}
     </div>
   );
 }

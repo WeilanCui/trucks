@@ -1,21 +1,31 @@
 const db = require("../models/userModels.js");
-let query = `SELECT * from trucks`;
-let add = `INSERT INTO trucks (type)
-VALUES ('small')`;
-let createStuff = `CREATE TABLE SALES`;
 
-db.query(query);
 const loginControl = {};
+module.exports = loginControl;
 
-loginControl.example = (req, res, next) => {
+loginControl.signIn = (req, res, next) => {
   console.log("inside login controller");
-  console.log(req.params.username);
-  console.log(req.params.password);
-  const findUserQuery = `SELECT user_name, password from users where user_name='${req.params.username}' AND password='${req.params.password}'`;
+//   console.log(req.params.username);
+//   console.log(req.params.password);
+  const findUserQuery = `SELECT * from users where user_name='${req.params.username}' AND password='${req.params.password}'`;
+
   db.query(findUserQuery).then((response) => {
     console.log(response, "yoooohooooo");
     // if (response.rowCount){console.log('found it')}
-    response.rowCount? console.log('found it'): console.log('not registered user')
+    if (response.rowCount)return res.status(200).send('true')
+     else { return res.status(200).send('false')}
   });
 };
-module.exports = loginControl;
+
+loginControl.signUp=(req,res,next)=>{
+
+    const signUpQuery=`INSERT user (user_name, password) VALUES ('${req.params.username}', '${req.params.password}')`
+    //add if conflict
+    console.log(req.params.username)
+
+    //if successful 
+    //if failed
+    return res.status(200).send('false')
+}
+
+

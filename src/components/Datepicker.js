@@ -47,6 +47,7 @@ function Datepicker() {
         dateFormat='MM/dd h:mm aa'
         withPortal
       />
+      
       <TruckAvailability dateRange={dateRange}/>
     </div>
   );
