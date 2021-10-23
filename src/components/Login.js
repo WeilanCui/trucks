@@ -53,7 +53,6 @@ export default function Login(props) {
       </form>
 
       {log ? <Reservations username={username} /> : <h2>Login to see Reservations</h2>}
-      {/* <Reservations/> */}
     </div>
   );
 }
