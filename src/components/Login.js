@@ -3,7 +3,7 @@ export default function Login(props) {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const onSubmitFetch = (username, password) => {
-      console.log('sending')
+    if (!username || !password) return alert("Please enter username and password, or signup")
       return fetch(`/login/${username}/${password}`)
   };
   return (
