@@ -4,14 +4,11 @@ const loginControl = {};
 module.exports = loginControl;
 
 loginControl.signIn = (req, res, next) => {
-  console.log("inside login controller");
-//   console.log(req.params.username);
-//   console.log(req.params.password);
+//   console.log("inside login controller");
   const findUserQuery = `SELECT * from users where user_name='${req.params.username}' AND password='${req.params.password}'`;
 
   db.query(findUserQuery).then((response) => {
     console.log(response, "yoooohooooo");
-    // if (response.rowCount){console.log('found it')}
     if (response.rowCount)return res.status(200).send('true')
      else { return res.status(200).send('false')}
   });
@@ -19,13 +16,13 @@ loginControl.signIn = (req, res, next) => {
 
 loginControl.signUp=(req,res,next)=>{
 
-    const signUpQuery=`INSERT user (user_name, password) VALUES ('${req.params.username}', '${req.params.password}')`
-    //add if conflict
-    console.log(req.params.username)
+    const signUpQuery=`INSERT INTO users (user_name, password) VALUES ('${req.params.username}', '${req.params.password}') ON CONFLICT (user_name) DO NOTHING`
 
-    //if successful 
-    //if failed
-    return res.status(200).send('false')
+    db.query(signUpQuery).then((response)=>{
+        if (!response.rowCount)return res.status(200).send('false')
+        res.status(200).json('signUp successful')
+    })
+    
+    res.status(200)
 }
-
 

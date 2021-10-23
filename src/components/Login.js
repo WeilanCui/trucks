@@ -13,9 +13,10 @@ export default function Login(props) {
       .then((res) => res.json())
       .then((response) => {
         
-        console.log(response);
+        ;
         if (response===false) return alert("login/sign up unsuccessful try again")
         setLog(true);
+        console.log(response)
       });
   };
 

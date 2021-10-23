@@ -24,7 +24,7 @@ loginControl.signUp,
 
 (req,res)=>{
   console.log('server signUP')
-  console.log(req.params.username)
+  // console.log(req.params.username)
   res.status(200).send("signUp server")
 })
 

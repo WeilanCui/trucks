@@ -5,7 +5,7 @@ export default function Reservations(props) {
     return (
         <div>
             
-            <h2>Welcome {props.username} View our Reservations</h2>
+            <h2>Hello {props.username} <br/>View Your Reservations</h2>
         </div>
     )
 }
