@@ -22,3 +22,11 @@ appointmentControl.getReservations = (req, res, next) => {
     console.log(err, "appointmentControl get reservations...");
   }
 };
+
+
+appointmentControl.truckTimes=(req,res,next)=>{
+  console.log(req.body)
+}
+
+
+

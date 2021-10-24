@@ -14,6 +14,7 @@ function Datepicker() {
   return (
     <div>
       <DatePicker
+      placeholderText="click to select dates"
         selectsRange={true}
         startDate={startDate}
         minDate={new Date()}
@@ -25,6 +26,7 @@ function Datepicker() {
       />
 
       <DatePicker
+      placeholderText="select pickup time"
         selected={startDate}
         onChange={(date) => {
           setDateRange([date, endDate]);
@@ -38,6 +40,7 @@ function Datepicker() {
       />
 
       <DatePicker
+      placeholderText="select return time"
         selected={endDate}
         showTimeSelect
         showTimeSelectOnly

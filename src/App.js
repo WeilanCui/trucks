@@ -14,9 +14,6 @@ function App() {
         <Switch>
           <Route exact path='/login' component={Login}></Route>
           <Route exact path='/datepicker' component={Datepicker}/>     
-
-          <button onClick={()=>fetch('/').then((data)=>console.log(data))}>click meeeeeeee</button>  
-
         </Switch> 
           
       </Router>
