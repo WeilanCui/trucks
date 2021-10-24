@@ -3,14 +3,15 @@ import React, { useEffect } from "react";
 export default function TruckAvailability(props){
     console.log(props)
 
-    const getTruckTimes=()=>{
+    const getTruckTimes=(e,route)=>{
+        e.preventDefault()
         console.log(props, "meeep")
         let obj={
             method:"POST",
             headers:{"content-type":"application/json"},
             body:JSON.stringify(props)
         }
-        fetch('/truckAvailability',obj).then((res)=>res.json()).then((response)=>{
+        fetch(`${route}`,obj).then((res)=>res.json()).then((response)=>{
             console.log(response)
         })
     }
@@ -18,7 +19,8 @@ export default function TruckAvailability(props){
     return(
         <div>
             <h2>TruckAvailability login to schedule time</h2>
-            <button onClick={getTruckTimes}> see truck Availability </button>
+            <button onClick={(e)=>getTruckTimes(e,'/truckAvailability')}> see truck Availability </button>
+            <button onClick={(e)=>getTruckTimes(e,'/reserve')}>Reserve</button>
         </div>
     )
 }

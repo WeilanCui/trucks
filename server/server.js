@@ -24,6 +24,9 @@ app.post("/truckAvailability", appointmentControl.truckTimes, (req, res) => {
   res.status(200).send("true")
 });
 
+app.post('/reserve',appointmentControl.reserve, (req,res)=>{
+  res.status(200).json({message:'reserve'})
+})
 app.use('*', (req,res)=>{
   res.status(404).send('page not found')
 })
