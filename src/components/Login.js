@@ -3,8 +3,7 @@ import Reservations from "./Reservations";
 export default function Login(props) {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
-  const [log, setLog] = useState(null);
-
+  const [log, setLog] = useState(false);
   const onSubmitFetch = (username, password, route) => {
     if (!username || !password)
       return alert("Please enter username and password, login or sign up");
@@ -12,23 +11,22 @@ export default function Login(props) {
     fetch(`/${route}/${username}/${password}`)
       .then((res) => res.json())
       .then((response) => {
-        
-        ;
         if (response===false) return alert("login/sign up unsuccessful try again")
-        setLog(true);
+        setLog({...response});
         console.log(response)
       });
   };
 
   return (
     <div>
-      <h2>Login or Signup component</h2>
+      <h2>Login or Sign-up</h2>
       <form>
         <input
           type='text'
           placeholder='username'
           onChange={(e) => {
             setUsername(e.target.value);
+   
           }}
         />
         <br />
@@ -51,8 +49,7 @@ export default function Login(props) {
           />
         </span>
       </form>
-
-      {log ? <Reservations username={username} /> : <h2>Login to see Reservations</h2>}
+      {log ? <Reservations reservations={log} /> : <h5>Login to see Reservations</h5>}
     </div>
   );
 }

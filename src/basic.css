@@ -1,0 +1,9 @@
+.reserveBox{
+    display:flex-column;
+    /* border:solid pink; */
+    margin:0px 20%
+}
+.reservation{
+    border-left: 20px solid burlywood;
+   
+}
