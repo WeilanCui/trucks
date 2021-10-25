@@ -26,8 +26,8 @@ appointmentControl.truckTimes = (req, res, next) => {
   const query = `SELECT trucks.id FROM trucks EXCEPT SELECT reservations.truck_id FROM reservations WHERE '${endRes}'> reservations.start AND '${startRes}'<reservations.return_time`;
 
   db.query(query).then((resp) => {
-    if (!resp.rows.length)
-      return res.status(200).json({ message: "No Trucks Available" });
+    if (!resp.rows.length){return res.status(200).json({ message: "No Trucks Available" });}
+    console.log("jklsdjflasjf;lkasdjflksjfs")
     res.locals.truckIds = resp.rows;
     next();
   });
@@ -49,13 +49,13 @@ appointmentControl.truckType = async (req, res, next) => {
     let id = resp.rows[0].id;
     truckObj[type] ? truckObj[type].push(id) : (truckObj[type] = [id]);
   });
-
+console.log(truckObj)
   return res.status(200).json(truckObj);
 };
 
 appointmentControl.reserve = (req, res, next) => {
-  console.log(req.body.dateRange[1]);
-  const query = `INSERT INTO reservations (truck_id, user_username, start, return_time) VALUES ('1', 'q','${req.body.dateRange[0]}', '${req.body.dateRange[1]}')`;
+  console.log(req.body);
+  const query = `INSERT INTO reservations (truck_id, user_username, start, return_time) VALUES ('${req.body.username}', '${req.body.username}','${req.body.dateRange[0]}', '${req.body.dateRange[1]}')`;
   db.query(query).then((resp) => {
     console.log(resp, "reserve controller");
     if (resp.rowCount) {

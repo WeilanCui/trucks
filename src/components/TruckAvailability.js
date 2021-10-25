@@ -5,7 +5,7 @@ export default function TruckAvailability(props) {
   const [respObj, setRespObj] = useState(null);
   const [reserves, setReserves]=useState(null)
 
-  const getTruckTimes = (e, route) => {
+  const getTruckTimes = (e) => {
     e.preventDefault();
     if (!props.dateRange[0]) return alert("Please select time");
     let obj = {
@@ -13,39 +13,48 @@ export default function TruckAvailability(props) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(props),
     };
-    fetch(`${route}`, obj)
+    fetch(`/truckAvailability`, obj)
       .then((res) => res.json())
       .then((response) => {
-        console.log(response, "duuude");
-
-        if (route === "/truckAvailability") {
+          if(response.message){return console.log(response.message)}
+        console.log(response, "duuude")
           const type = Object.keys(response);
           setRespObj([type, response]);
-        }
+        
       });
   };
 
 const submitRes=(e)=>{
     e.preventDefault()
-    console.log(reserves,"reserving")
-    console.log(window.localStorage.username)
-    if(!window.localStorage)return alert('signin')
-
-    if(window.localStorage){
-        let username=window.localStorage.getItem('username')
-
+    // console.log(props)
+    // console.log(reserves,"reserving")
+    // console.log(window.localStorage.username)
+    if(!window.localStorage.username)return alert('login to confirm')
+   
+    const username=window.localStorage.getItem('username')
+    let bodyObj={
+        username,
+        dateRange:props.dateRange,
+        truckobj:reserves
     }
+    const obj = {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(bodyObj),
+      };
+
+      fetch(`/reserve`, obj)
+
+    
 }
 
   return (
     <div>
-      <h2>TruckAvailability login to schedule time</h2>
       <button onClick={(e) => getTruckTimes(e, "/truckAvailability")}>
         {" "}
-        see truck Availability{" "}
+        Check truck Availability{" "}
       </button>
-      <button onClick={(e) => getTruckTimes(e, "/reserve")}>Reserve</button>
-      <h3>Availabile trucks </h3>
+      <h3>Availabile trucks: </h3>
 
       <div className='truck'>
       {respObj ? (
@@ -55,18 +64,14 @@ const submitRes=(e)=>{
               <h3>
               Reserve <input type="number" onClick={(e)=>{
                   let holdID=respObj[1][tr].slice(-e.target.event)
-                  setReserves({[tr]:holdID})
-              }} placeholder='0' id="quantity" name="quantity" min="1" max={respObj[1][tr].length}/> {tr} truck
-              </h3>
-              <button onClick={submitRes}>confirm</button>
+                  setReserves(holdID)
+              }} placeholder='0' id="quantity" name="quantity" min="1" max={respObj[1][tr].length}/> {tr} truck <button onClick={submitRes}>Confirm</button> </h3> 
             </span>
           );
         })
       ) : (
-        <h3>see available trucks:</h3>
+        <h3>No Available Trucks Try Again</h3>
       )}
-                    
-
       </div>
     </div>
   );
