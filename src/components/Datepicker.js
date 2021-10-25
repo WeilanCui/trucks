@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import TruckAvailability from "./TruckAvailability";
 import "react-datepicker/dist/react-datepicker.css";
@@ -6,9 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 function Datepicker() {
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
-  useEffect(() => {
-    console.log(typeof startDate);
-  });
+  
   return (
     <div>
       <DatePicker

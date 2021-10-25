@@ -28,19 +28,3 @@ loginControl.signUp = (req, res, next) => {
   });}catch(err){console.log(err, "loginControl signUp err")}
  
 };
-
-// db.query(`ALTER TABLE users ADD CONSTRAINT U_name_constraint UNIQUE (user_name)`)
-
-//asking for any users with reservations--yes it works!!!!
-// const query='SELECT * FROM users INNER JOIN reservations ON user_name=user_username'
-// const query3=`SELECT FROM reservations where user_username='q' INNER JOIN reservations ON user_name=user_username `
-
-//this works it is selective
-// const attempt=`SELECT * FROM users INNER JOIN reservations ON user_name=user_username WHERE user_name='q'`
-
-// const query2=`IF EXISTS (SELECT * FROM users WHERE user_name='q' AND password='q') THEN SELECT INNER JOIN reservations ON user_name=user_username; END IF`
-
-// this works selects user and respective reservations
-// const attempt2=`SELECT * FROM users INNER JOIN reservations ON user_name=user_username WHERE user_name='no' AND password='res' ORDER BY start`
-
-// db.query(attempt3).then((resp)=>console.log(resp, "meeeeee"))

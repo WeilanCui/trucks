@@ -23,7 +23,7 @@ appointmentControl.getReservations = (req, res, next) => {
 appointmentControl.truckTimes = (req, res, next) => {
   const startRes = req.body.dateRange[0];
   const endRes = req.body.dateRange[1];
-  const query = `SELECT trucks.id FROM trucks EXCEPT SELECT reservations.truck_id FROM reservations WHERE '${endRes}'> reservations.start AND '${startRes}'<reservations.return_time `;
+  const query = `SELECT trucks.id FROM trucks EXCEPT SELECT reservations.truck_id FROM reservations WHERE '${endRes}'> reservations.start AND '${startRes}'<reservations.return_time`;
 
   db.query(query).then((resp) => {
     if (!resp.rows.length)

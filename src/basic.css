@@ -1,9 +1,13 @@
-.reserveBox{
-    display:flex-column;
-    /* border:solid pink; */
-    margin:0px 20%
+.reserveBox {
+  display: flex-column;
+  /* border:solid pink; */
+  margin: 0px 20%;
 }
-.reservation{
-    border-left: 20px solid burlywood;
-   
+.reservation {
+  border-left: 20px solid burlywood;
+}
+.truck {
+  text-align:left;
+  /* display: flex-column; */
+  padding-left: 43%;
 }
