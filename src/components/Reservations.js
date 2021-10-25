@@ -3,10 +3,8 @@ import "../basic.css";
 import { withRouter } from "react-router-dom";
 
 function Reservations(props) {
-    console.log(props, "reservations")
-    // useEffect(()=>{
-        window.localStorage.setItem('username',props.reservations.name)
-    // },[])
+  // console.log(props, "reservations");
+  window.localStorage.setItem("username", props.reservations.name);
   return (
     <div className='reserveBox'>
       <h2>Hi {props.reservations.name} view your reservations: </h2>
@@ -24,4 +22,4 @@ function Reservations(props) {
   );
 }
 
-export default withRouter(Reservations)
+export default withRouter(Reservations);
