@@ -49,8 +49,8 @@ appointmentControl.truckType = async (req, res, next) => {
     let id = resp.rows[0].id;
     truckObj[type] ? truckObj[type].push(id) : (truckObj[type] = [id]);
   });
-  
-  return res.send(200).json(truckObj);
+
+  return res.status(200).json(truckObj);
 };
 
 appointmentControl.reserve = (req, res, next) => {
