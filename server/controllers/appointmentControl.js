@@ -65,20 +65,40 @@ appointmentControl.reserve = async (req, res, next) => {
       bookIDs.push(...truckobj[type]);
     }
   });
-
+  if (!bookIDs.length) {
+    return res
+      .status(200)
+      .json({
+        message:
+          "Error in Reserving: please check your reservations and try again",
+      });
+  }
+  
   let flag = false;
   try {
     for (let i = 0; i < bookIDs.length; i++) {
       const query = `INSERT INTO reservations (truck_id, user_username, start, return_time) VALUES ('${bookIDs[i]}', '${req.body.username}','${req.body.dateRange[0]}', '${req.body.dateRange[1]}')`;
-      
+
       const response = await db.query(query);
       if (!response.rowCount) {
         flag = true;
         continue;
       }
     }
-if (flag){return res.status(200).json({message:"Error in Reserving: please check your reservations and try again"})}
-return (res.status(200).json({message:"Confirmed Reservations: see Login for reservation confirmation"}))
+    if (flag) {
+      return res
+        .status(200)
+        .json({
+          message:
+            "Error in Reserving: please check your reservations and try again",
+        });
+    }
+    return res
+      .status(200)
+      .json({
+        message:
+          "Confirmed Reservations: see Login for reservation confirmation",
+      });
   } catch (err) {
     console.log("error in reserve");
     console.error();

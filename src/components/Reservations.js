@@ -3,7 +3,6 @@ import "../basic.css";
 import { withRouter } from "react-router-dom";
 
 function Reservations(props) {
-  // console.log(props, "reservations");
   window.localStorage.setItem("username", props.reservations.name);
   return (
     <div className='reserveBox'>
