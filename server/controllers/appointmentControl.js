@@ -5,7 +5,7 @@ module.exports = appointmentControl;
 
 appointmentControl.getReservations = (req, res, next) => {
   console.log(req.params.username, "hittt mee");
-  const query = `SELECT reservations.id, trucks.type, reservations.start, reservations.end FROM users INNER JOIN reservations ON user_name=user_username INNER JOIN trucks ON truck_id=trucks.id WHERE user_name='${req.params.username}' ORDER BY reservations.end`;
+  const query = `SELECT reservations.id, trucks.type, reservations.start, reservations.return_time FROM users INNER JOIN reservations ON user_name=user_username INNER JOIN trucks ON truck_id=trucks.id WHERE user_name='${req.params.username}' ORDER BY reservations.return_time`;
   try {
     db.query(query).then((response) => {
       if (!response.rowCount) {
@@ -21,25 +21,32 @@ appointmentControl.getReservations = (req, res, next) => {
 };
 
 appointmentControl.truckTimes = (req, res, next) => {
-  console.log(req.body);
-};
+  const startRes = req.body.dateRange[0];
+  const endRes = req.body.dateRange[1];
+  console.log(startRes, endRes);
+  const query = `SELECT trucks.id FROM trucks EXCEPT SELECT reservations.truck_id FROM reservations WHERE '${endRes}'> reservations.start AND '${startRes}'<reservations.return_time `;
 
+  db.query(query).then((resp) => {
+    console.log(resp);
+  });
+};
 appointmentControl.reserve = (req, res, next) => {
   console.log(req.body.dateRange[1]);
-  const query=`INSERT INTO reservations (truck_id, user_username, start, return_time) VALUES ('1', 'q','${req.body.dateRange[0]}', '${req.body.dateRange[1]}')`
-    db.query(query).then((resp)=>{
-     console.log(resp, "reserve controller")
-     res.status(200).json({message:"got it"})
-    })
+  const query = `INSERT INTO reservations (truck_id, user_username, start, return_time) VALUES ('1', 'q','${req.body.dateRange[0]}', '${req.body.dateRange[1]}')`;
+  db.query(query).then((resp) => {
+    console.log(resp, "reserve controller");
+    if (resp.rowCount) {
+      return res.status(200).json({ message: "reserved confirmation" });
+    }
+    return res.status(200).json({message:"cant reserve try"})
+  });
 };
 
 // if (start<AlreadyEnd && End> AlreadyStart){then exclude}
 
-//grabs truck values except when matches
-// const query = `SELECT trucks.id, trucks.type FROM trucks LEFT JOIN reservations ON truck_id=trucks.id WHERE truck_id IS NULL`;
-
-//add condition where filter through time so instead of where use exclude
-
 // const queryEx=`SELECT trucks.id, trucks.type FROM trucks LEFT JOIN reservations ON truck_id=trucks.id WHERE truck_id IS NULL`
 
-// db.query(query).then((respo)=>console.log(respo))
+// const query = `SELECT trucks.id FROM trucks EXCEPT SELECT truck_id FROM reservations`;
+
+// const all=`SELECT * FROM reservations`
+// db.query(all).then((respo)=>console.log(respo))
