@@ -24,43 +24,46 @@ appointmentControl.truckTimes = (req, res, next) => {
   const startRes = req.body.dateRange[0];
   const endRes = req.body.dateRange[1];
   const query = `SELECT trucks.id FROM trucks EXCEPT SELECT reservations.truck_id FROM reservations WHERE '${endRes}'> reservations.start AND '${startRes}'<reservations.return_time`;
-
-  db.query(query).then((resp) => {
-    if (!resp.rows.length){return res.status(200).json({ message: "No Trucks Available" });}
-    console.log("jklsdjflasjf;lkasdjflksjfs")
-    res.locals.truckIds = resp.rows;
-    next();
-  });
+  try {
+    db.query(query).then((resp) => {
+      if (!resp.rows.length) {
+        return res.status(200).json({ message: "No Trucks Available" });
+      }
+      res.locals.truckIds = resp.rows;
+      next();
+    });
+  } catch (err) {
+    console.error();
+    console.log("error in truckTimes");
+  }
 };
 
-appointmentControl.truckType = async (req, res, next) => {
+appointmentControl.truckType =  async (req, res, next) => {
   const truckObj = {};
   const ids = res.locals.truckIds;
-
-  const stuff = await Promise.all(
-    ids.map(async (k) => {
-      const query = `SELECT id, type FROM trucks WHERE id='${k.id}'`;
-      return db.query(query);
-    })
-  );
-
-  stuff.forEach((resp) => {
-    let type = resp.rows[0].type;
-    let id = resp.rows[0].id;
-    truckObj[type] ? truckObj[type].push(id) : (truckObj[type] = [id]);
-  });
-console.log(truckObj)
-  return res.status(200).json(truckObj);
+  try {
+    for (let i = 0; i < ids.length; i++) {
+      const query = `SELECT type,id FROM trucks WHERE trucks.id='${ids[i].id}'`;
+      const resp= await db.query(query)
+         let type = await resp.rows[0].type;
+         let id = await resp.rows[0].id;
+         truckObj[type] ? truckObj[type].push(id) : (truckObj[type] = [id]);
+    }
+    return res.status(200).json(truckObj)
+  } catch (err) {
+    console.log("error in truckType ");
+    console.error();
+  }
 };
 
 appointmentControl.reserve = (req, res, next) => {
-  console.log(req.body);
+  console.log(req.body, "here");
   const query = `INSERT INTO reservations (truck_id, user_username, start, return_time) VALUES ('${req.body.username}', '${req.body.username}','${req.body.dateRange[0]}', '${req.body.dateRange[1]}')`;
   db.query(query).then((resp) => {
     console.log(resp, "reserve controller");
     if (resp.rowCount) {
       return res.status(200).json({ message: "reserved confirmation" });
     }
-    return res.status(200).json({ message: "cant reserve try again" });
+    return res.status(200).json({ message: "can't reserve try again" });
   });
 };

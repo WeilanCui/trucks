@@ -3,7 +3,7 @@ import "../basic.css";
 
 export default function TruckAvailability(props) {
   const [respObj, setRespObj] = useState(null);
-  const [reserves, setReserves]=useState(null)
+  const [reserves, setReserves]=useState({})
 
   const getTruckTimes = (e) => {
     e.preventDefault();
@@ -17,21 +17,17 @@ export default function TruckAvailability(props) {
       .then((res) => res.json())
       .then((response) => {
           if(response.message){return console.log(response.message)}
-        console.log(response, "duuude")
           const type = Object.keys(response);
           setRespObj([type, response]);
-        
       });
   };
 
 const submitRes=(e)=>{
     e.preventDefault()
-    // console.log(props)
-    // console.log(reserves,"reserving")
-    // console.log(window.localStorage.username)
     if(!window.localStorage.username)return alert('login to confirm')
-   
+
     const username=window.localStorage.getItem('username')
+
     let bodyObj={
         username,
         dateRange:props.dateRange,
@@ -42,8 +38,8 @@ const submitRes=(e)=>{
         headers: { "content-type": "application/json" },
         body: JSON.stringify(bodyObj),
       };
-
-      fetch(`/reserve`, obj)
+console.log(reserves,"meep")
+    //   fetch(`/reserve`, obj)
 
     
 }
@@ -61,17 +57,25 @@ const submitRes=(e)=>{
         respObj[0].map((tr, i) => {
           return (
             <span key={i}>
+                <form>
               <h3>
-              Reserve <input type="number" onClick={(e)=>{
-                  let holdID=respObj[1][tr].slice(-e.target.event)
-                  setReserves(holdID)
-              }} placeholder='0' id="quantity" name="quantity" min="1" max={respObj[1][tr].length}/> {tr} truck <button onClick={submitRes}>Confirm</button> </h3> 
+              Reserve <input type="number" onChange={(e)=>{
+
+                  const holdID=[...respObj[1][tr]]
+                  console.log(e.target.value, "herrrr")
+                  const truckID=holdID.slice(0,e.target.value)
+                  console.log(truckID)
+
+                  setReserves({...reserves, [reserves[tr]]:truckID})
+              }} placeholder='0' min='0' max={respObj[1][tr].length}/> {tr} truck </h3> 
+              </form>
             </span>
           );
         })
       ) : (
         <h3>No Available Trucks Try Again</h3>
       )}
+      <button type="submit"onClick={submitRes}>Confirm</button>
       </div>
     </div>
   );
