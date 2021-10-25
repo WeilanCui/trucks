@@ -7,27 +7,23 @@ app.use(express.json());
 const loginControl = require("./controllers/loginControl.js");
 const appointmentControl= require("./controllers/appointmentControl.js")
 
+//uses express error handling from controller object
+
 app.get("/login/:username/:password", loginControl.signIn, appointmentControl.getReservations, (req, res) => {
-  // console.log(req.body);
-  // res.status(200).send("longin server");
-  return
+  return res.status(400).json({message:'login error'})
 });
 
 app.get("/signUp/:username/:password", loginControl.signUp, (req, res) => {
   console.log("server signUP");
-  // console.log(req.params.username)
-  res.status(200).send("signUp server");
+  res.status(400).json({message:'signUp error'});
 });
 
 app.post("/truckAvailability", appointmentControl.truckTimes, (req, res) => {
-  // console.log(req.body)
   res.status(200).send("true")
 });
 
 app.post('/reserve',appointmentControl.reserve, (req,res)=>{
-  res.status(200).json({message:'reserve'})
+  return res.status(400).json({message:'reserve error'})
 })
-app.use('*', (req,res)=>{
-  res.status(404).send('page not found')
-})
+
 app.listen(PORT, () => console.log(`server listening on ${PORT}`));

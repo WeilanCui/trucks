@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 
 export default function TruckAvailability(props){
-    console.log(props)
+
+  
+    let diff=JSON.stringify(props.dateRange[0])
+   let date= new Date(diff)
+    let hff=JSON.parse(diff)
+    console.log(props.dateRange[0], diff)
+    console.log(new Date())
 
     const getTruckTimes=(e,route)=>{
         e.preventDefault()

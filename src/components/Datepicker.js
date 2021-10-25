@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import TruckAvailability from "./TruckAvailability"
-// import { addDays } from "date-fns";
-
+import TruckAvailability from "./TruckAvailability";
 import "react-datepicker/dist/react-datepicker.css";
 
 function Datepicker() {
@@ -14,7 +12,7 @@ function Datepicker() {
   return (
     <div>
       <DatePicker
-      placeholderText="click to select dates"
+        placeholderText='click to select dates'
         selectsRange={true}
         startDate={startDate}
         minDate={new Date()}
@@ -26,7 +24,7 @@ function Datepicker() {
       />
 
       <DatePicker
-      placeholderText="select pickup time"
+        placeholderText='select pickup time'
         selected={startDate}
         onChange={(date) => {
           setDateRange([date, endDate]);
@@ -40,7 +38,7 @@ function Datepicker() {
       />
 
       <DatePicker
-      placeholderText="select return time"
+        placeholderText='select return time'
         selected={endDate}
         showTimeSelect
         showTimeSelectOnly
@@ -50,8 +48,8 @@ function Datepicker() {
         dateFormat='MM/dd h:mm aa'
         withPortal
       />
-      
-      <TruckAvailability dateRange={dateRange}/>
+
+      <TruckAvailability dateRange={dateRange} />
     </div>
   );
 }
