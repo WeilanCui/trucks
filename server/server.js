@@ -18,7 +18,7 @@ app.get("/signUp/:username/:password", loginControl.signUp, (req, res) => {
   res.status(400).json({message:'signUp error'});
 });
 
-app.post("/truckAvailability", appointmentControl.truckTimes, (req, res) => {
+app.post("/truckAvailability", appointmentControl.truckTimes, appointmentControl.truckType, (req, res) => {
   res.status(200).send("true")
 });
 

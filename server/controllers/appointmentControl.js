@@ -23,13 +23,36 @@ appointmentControl.getReservations = (req, res, next) => {
 appointmentControl.truckTimes = (req, res, next) => {
   const startRes = req.body.dateRange[0];
   const endRes = req.body.dateRange[1];
-  console.log(startRes, endRes);
   const query = `SELECT trucks.id FROM trucks EXCEPT SELECT reservations.truck_id FROM reservations WHERE '${endRes}'> reservations.start AND '${startRes}'<reservations.return_time `;
 
   db.query(query).then((resp) => {
-    console.log(resp);
+    if (!resp.rows.length)
+      return res.status(200).json({ message: "No Trucks Available" });
+    res.locals.truckIds = resp.rows;
+    next();
   });
 };
+
+appointmentControl.truckType = async (req, res, next) => {
+  const truckObj = {};
+  const ids = res.locals.truckIds;
+
+  const stuff = await Promise.all(
+    ids.map(async (k) => {
+      const query = `SELECT id, type FROM trucks WHERE id='${k.id}'`;
+      return db.query(query);
+    })
+  );
+
+  stuff.forEach((resp) => {
+    let type = resp.rows[0].type;
+    let id = resp.rows[0].id;
+    truckObj[type] ? truckObj[type].push(id) : (truckObj[type] = [id]);
+  });
+  
+  return res.send(200).json(truckObj);
+};
+
 appointmentControl.reserve = (req, res, next) => {
   console.log(req.body.dateRange[1]);
   const query = `INSERT INTO reservations (truck_id, user_username, start, return_time) VALUES ('1', 'q','${req.body.dateRange[0]}', '${req.body.dateRange[1]}')`;
@@ -38,15 +61,6 @@ appointmentControl.reserve = (req, res, next) => {
     if (resp.rowCount) {
       return res.status(200).json({ message: "reserved confirmation" });
     }
-    return res.status(200).json({message:"cant reserve try"})
+    return res.status(200).json({ message: "cant reserve try again" });
   });
 };
-
-// if (start<AlreadyEnd && End> AlreadyStart){then exclude}
-
-// const queryEx=`SELECT trucks.id, trucks.type FROM trucks LEFT JOIN reservations ON truck_id=trucks.id WHERE truck_id IS NULL`
-
-// const query = `SELECT trucks.id FROM trucks EXCEPT SELECT truck_id FROM reservations`;
-
-// const all=`SELECT * FROM reservations`
-// db.query(all).then((respo)=>console.log(respo))
