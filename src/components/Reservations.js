@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import "../basic.css";
-export default function Reservations(props) {
+import { withRouter } from "react-router-dom";
+
+function Reservations(props) {
+    console.log(props, "reservations")
+    // useEffect(()=>{
+        window.localStorage.setItem('username',props.reservations.name)
+    // },[])
   return (
     <div className='reserveBox'>
       <h2>Hi {props.reservations.name} view your reservations: </h2>
@@ -17,3 +23,5 @@ export default function Reservations(props) {
     </div>
   );
 }
+
+export default withRouter(Reservations)

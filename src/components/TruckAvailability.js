@@ -25,7 +25,18 @@ export default function TruckAvailability(props) {
       });
   };
 
-const submitRes=()=>{}
+const submitRes=(e)=>{
+    e.preventDefault()
+    console.log(reserves,"reserving")
+    console.log(window.localStorage.username)
+    if(!window.localStorage)return alert('signin')
+
+    if(window.localStorage){
+        let username=window.localStorage.getItem('username')
+
+    }
+}
+
   return (
     <div>
       <h2>TruckAvailability login to schedule time</h2>
@@ -44,10 +55,10 @@ const submitRes=()=>{}
               <h3>
               Reserve <input type="number" onClick={(e)=>{
                   let holdID=respObj[1][tr].slice(-e.target.event)
-                  setReserves(...{[tr]:holdID})
+                  setReserves({[tr]:holdID})
               }} placeholder='0' id="quantity" name="quantity" min="1" max={respObj[1][tr].length}/> {tr} truck
               </h3>
-              <button onClick={(e)=>console.log(reserves)}>confirm</button>
+              <button onClick={submitRes}>confirm</button>
             </span>
           );
         })

@@ -1,9 +1,10 @@
 import "./App.css";
 import Datepicker from "./components/Datepicker";
 import Login from "./components/Login"
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, useHistory } from "react-router-dom";
 
 function App() {
+  let history=useHistory()
   return (
     <div className='App'>
       <h1>Welcome to Truck Scheduling</h1>
